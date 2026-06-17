@@ -1,0 +1,19 @@
+.DS_Store
+node_modules/
+.next/
+out/
+next-env.d.ts
+tsconfig.tsbuildinfo
+.env
+
+__pycache__/
+.pytest_cache/
+.venv/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# phase execution outputs
+phases/**/phase*-output.json
+phases/**/step*-output.json
