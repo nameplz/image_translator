@@ -1,0 +1,31 @@
+{
+  "project": "Image Translator",
+  "phase": "0-core-vertical-slice",
+  "steps": [
+    {
+      "step": 0,
+      "name": "project-package-boundaries",
+      "status": "pending"
+    },
+    {
+      "step": 1,
+      "name": "domain-core-models",
+      "status": "pending"
+    },
+    {
+      "step": 2,
+      "name": "quality-export-policy",
+      "status": "pending"
+    },
+    {
+      "step": 3,
+      "name": "provider-contracts-mocks",
+      "status": "pending"
+    },
+    {
+      "step": 4,
+      "name": "mock-workflow-use-case",
+      "status": "pending"
+    }
+  ]
+}

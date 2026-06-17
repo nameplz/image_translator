@@ -1,0 +1,31 @@
+{
+  "project": "Image Translator",
+  "phase": "2-workflow-provider-runtime",
+  "steps": [
+    {
+      "step": 0,
+      "name": "provider-runtime-config",
+      "status": "pending"
+    },
+    {
+      "step": 1,
+      "name": "translation-quality-graph",
+      "status": "pending"
+    },
+    {
+      "step": 2,
+      "name": "result-quality-graph",
+      "status": "pending"
+    },
+    {
+      "step": 3,
+      "name": "natural-revision-graph",
+      "status": "pending"
+    },
+    {
+      "step": 4,
+      "name": "checkpoint-resume-runtime",
+      "status": "pending"
+    }
+  ]
+}

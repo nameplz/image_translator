@@ -1,0 +1,20 @@
+{
+  "phases": [
+    {
+      "dir": "0-core-vertical-slice",
+      "status": "pending"
+    },
+    {
+      "dir": "1-image-layout-rendering",
+      "status": "pending"
+    },
+    {
+      "dir": "2-workflow-provider-runtime",
+      "status": "pending"
+    },
+    {
+      "dir": "3-gui-export-release",
+      "status": "pending"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "project": "Image Translator",
+  "phase": "1-image-layout-rendering",
+  "steps": [
+    {
+      "step": 0,
+      "name": "image-io-resources",
+      "status": "pending"
+    },
+    {
+      "step": 1,
+      "name": "ocr-normalization",
+      "status": "pending"
+    },
+    {
+      "step": 2,
+      "name": "reading-order-layout",
+      "status": "pending"
+    },
+    {
+      "step": 3,
+      "name": "inpainting-rendering",
+      "status": "pending"
+    },
+    {
+      "step": 4,
+      "name": "export-service",
+      "status": "pending"
+    }
+  ]
+}

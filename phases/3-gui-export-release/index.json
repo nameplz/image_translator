@@ -1,0 +1,31 @@
+{
+  "project": "Image Translator",
+  "phase": "3-gui-export-release",
+  "steps": [
+    {
+      "step": 0,
+      "name": "gui-foundation",
+      "status": "pending"
+    },
+    {
+      "step": 1,
+      "name": "worker-progress-cancel",
+      "status": "pending"
+    },
+    {
+      "step": 2,
+      "name": "review-revision-ui",
+      "status": "pending"
+    },
+    {
+      "step": 3,
+      "name": "settings-privacy-export-ui",
+      "status": "pending"
+    },
+    {
+      "step": 4,
+      "name": "integration-release-gates",
+      "status": "pending"
+    }
+  ]
+}
