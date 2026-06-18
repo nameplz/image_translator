@@ -157,7 +157,7 @@ GUI 편집 세션이 소유한다.
 
 - worker thread가 asyncio event loop와 graph task를 소유한다.
 - 취소는 `loop.call_soon_threadsafe(task.cancel)`로 전달한다.
-- `CancelledError`는 `CANCELLED`로 변환한다.
+- `CancelledError`는 serialized `JobStatus.cancelled` 상태로 변환한다.
 - graph stream update는 progress mapper가 `JobSnapshot`으로 변환한다.
 - GUI는 signal을 통해 snapshot, preview, interrupt payload를 받는다.
 - preview와 자연어 수정 결과는 monotonically increasing request ID를 사용한다.

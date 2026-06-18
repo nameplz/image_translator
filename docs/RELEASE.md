@@ -14,14 +14,15 @@
 - secret 및 개인 경로 검사
 - dependency audit
 
-실제 provider smoke는 credential과 provider 가용 환경이 있는 release validation에서 수행한다.
+실제 provider smoke는 credential과 provider 가용 환경이 있는 release validation에서
+`uv run pytest -m provider_smoke`로 별도 수행한다. credential이 없으면 skip한다.
 
 ## 2. CI 단계
 
 ### 기본 PR Gate
 
 ```text
-uv sync --locked --extra dev
+uv sync --locked --group dev
 pytest
 coverage
 ruff
@@ -31,7 +32,7 @@ offscreen GUI tests
 
 ### Release Gate
 
-- provider smoke
+- provider smoke (`uv run pytest -m provider_smoke`, credential 없으면 skip)
 - installed wheel smoke
 - source tree 밖 실행
 - PyInstaller artifact smoke
@@ -78,7 +79,7 @@ committed config:
 provider SDK 또는 model 기본값 변경 시:
 
 - capability와 schema contract 확인
-- smoke test 실행
+- `provider_smoke` marker smoke test 실행
 - prompt contract compatibility 확인
 - release note에 변경 기록
 

@@ -1,30 +1,35 @@
 {
   "project": "Image Translator",
-  "phase": "3-gui-export-release",
+  "phase": "4-real-provider-adapters",
   "steps": [
     {
       "step": 0,
-      "name": "gui-foundation",
+      "name": "provider-sdk-and-fixtures",
       "status": "pending"
     },
     {
       "step": 1,
-      "name": "worker-progress-cancel",
+      "name": "deepl-translator-adapter",
       "status": "pending"
     },
     {
       "step": 2,
-      "name": "review-revision-ui",
+      "name": "openai-adapter",
       "status": "pending"
     },
     {
       "step": 3,
-      "name": "settings-privacy-export-ui",
+      "name": "gemini-adapter",
       "status": "pending"
     },
     {
       "step": 4,
-      "name": "mock-mvp-integration-release-gates",
+      "name": "grok-adapter",
+      "status": "pending"
+    },
+    {
+      "step": 5,
+      "name": "provider-smoke-release-gate",
       "status": "pending"
     }
   ]

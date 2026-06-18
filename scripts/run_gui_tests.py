@@ -13,6 +13,8 @@ from pathlib import Path
 from typing import Any
 
 GUI_DEPENDENCIES = {"pyside6", "pytest-qt"}
+GUI_TEST_COMMAND = ["uv", "run", "pytest", "tests/gui"]
+GUI_TEST_COMMAND_DISPLAY = "uv run pytest tests/gui"
 
 
 def _dependency_name(value: str) -> str:
@@ -87,8 +89,8 @@ def main() -> int:
 
     env = os.environ.copy()
     env["QT_QPA_PLATFORM"] = "offscreen"
-    command = ["uv", "run", "pytest", "-m", "gui"]
-    print(f"Running GUI tests with QT_QPA_PLATFORM=offscreen: {' '.join(command)}")
+    command = GUI_TEST_COMMAND
+    print(f"Running GUI tests with QT_QPA_PLATFORM=offscreen: {GUI_TEST_COMMAND_DISPLAY}")
     try:
         result = subprocess.run(command, cwd=root, env=env)
     except FileNotFoundError:

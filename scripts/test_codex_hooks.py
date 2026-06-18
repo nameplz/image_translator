@@ -324,6 +324,32 @@ dependencies = ["PySide6"]
     assert run_gui_tests._gui_contract_exists(tests_root)
 
 
+def test_gui_test_wrapper_runs_tests_gui_path_offscreen(tmp_path, monkeypatch):
+    run_gui_tests = load_script("run_gui_tests")
+    tests_dir = tmp_path / "tests" / "gui"
+    tests_dir.mkdir(parents=True)
+    (tests_dir / "test_main_window.py").write_text("def test_placeholder():\n    assert True\n")
+    captured = {}
+
+    def fake_run(command, cwd, env):
+        captured["command"] = command
+        captured["cwd"] = cwd
+        captured["env"] = env
+        return subprocess.CompletedProcess(command, 0)
+
+    monkeypatch.setattr(run_gui_tests.subprocess, "run", fake_run)
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        ["run_gui_tests.py", "--root", str(tmp_path)],
+    )
+
+    assert run_gui_tests.main() == 0
+    assert captured["command"] == ["uv", "run", "pytest", "tests/gui"]
+    assert captured["cwd"] == tmp_path
+    assert captured["env"]["QT_QPA_PLATFORM"] == "offscreen"
+
+
 def test_configure_harness_writes_validation_config(tmp_path):
     tests_dir = tmp_path / "tests"
     tests_dir.mkdir()

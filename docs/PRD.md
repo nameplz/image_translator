@@ -123,7 +123,7 @@ Image Translator는 만화·웹툰 이미지에서 텍스트를 인식하고 번
 
 수용 기준:
 
-- 취소는 실패가 아닌 `CANCELLED` 상태로 처리한다.
+- 취소는 실패가 아닌 `JobStatus.cancelled` 상태로 처리한다.
 - checkpoint에는 API key, 이미지 배열, provider raw payload를 저장하지 않는다.
 - 재개 시 완료된 provider 호출을 불필요하게 반복하지 않는다.
 

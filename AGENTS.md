@@ -76,7 +76,8 @@ Harness phase는 `phases/index.json`을 따른다.
 1. `0-core-vertical-slice`: package boundary, domain model, 품질과 export policy, mock provider, mock workflow use case
 2. `1-image-layout-rendering`: image IO, OCR normalization, reading order, inpainting, rendering, export service
 3. `2-workflow-provider-runtime`: provider runtime, LangGraph workflow, revision graph, checkpoint와 resume
-4. `3-gui-export-release`: GUI, worker, review UI, settings, privacy, export, release gate
+4. `3-gui-export-release`: GUI, worker, review UI, settings, privacy, export, mock MVP integration gate
+5. `4-real-provider-adapters`: DeepL, OpenAI, Gemini, Grok 실제 adapter와 provider smoke release gate
 
 새 구현은 가능한 한 현재 phase와 step의 범위 안에서 진행한다. phase 계약과 다른 순서로 구현해야 하면
 관련 phase 문서와 acceptance criteria를 먼저 갱신한다.

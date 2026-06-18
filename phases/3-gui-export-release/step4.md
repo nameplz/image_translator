@@ -1,4 +1,4 @@
-# Step 4: integration-release-gates
+# Step 4: mock-mvp-integration-release-gates
 
 ## 읽어야 할 파일
 
@@ -20,7 +20,9 @@
 
 ## 작업
 
-MVP mock workflow 기준으로 integration, GUI, release readiness gate를 강화하라.
+MVP mock workflow 기준으로 integration, GUI, release readiness gate를 강화하라. 이 단계는
+mock MVP integration gate이며, 실제 provider adapter를 포함한 final MVP release gate는
+`4-real-provider-adapters` phase 이후에 완성한다.
 
 1. mock provider 기반 전체 workflow integration test를 완성하라.
    - 권장 파일: `/tests/integration/test_mock_mvp_workflow.py`

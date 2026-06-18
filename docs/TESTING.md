@@ -19,6 +19,7 @@ packaging_smoke
 ```
 
 provider smoke는 credential이 없으면 skip한다. 기본 CI는 외부 유료 provider를 호출하지 않는다.
+GUI test는 `tests/gui` 경로 기준으로 수집하며, `@pytest.mark.gui` marker는 선택적으로 사용할 수 있다.
 
 ## 3. Domain Unit Test
 
@@ -152,10 +153,14 @@ python3 scripts/run_gui_tests.py
 
 GUI wrapper는 `QT_QPA_PLATFORM=offscreen`을 설정한다. PySide6/pytest-qt 또는
 `tests/gui`가 없으면 bootstrap 상태로 간주해 skip하고, GUI dependency 또는 GUI test가
-도입된 뒤에는 `uv run pytest -m gui` 실패를 전체 validation 실패로 반환한다.
+도입된 뒤에는 `uv run pytest tests/gui` 실패를 전체 validation 실패로 반환한다.
+`@pytest.mark.gui`는 선택 사항이며 gate 통과 조건으로 요구하지 않는다.
 
 Provider:
 
 ```bash
 uv run pytest -m provider_smoke
 ```
+
+provider smoke는 credential이 있는 release validation에서 별도로 실행한다. credential이 없으면
+skip하며, 기본 validation은 외부 유료 provider를 호출하지 않는다.

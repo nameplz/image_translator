@@ -15,6 +15,10 @@
     {
       "dir": "3-gui-export-release",
       "status": "pending"
+    },
+    {
+      "dir": "4-real-provider-adapters",
+      "status": "pending"
     }
   ]
 }
