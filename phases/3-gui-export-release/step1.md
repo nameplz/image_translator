@@ -38,7 +38,7 @@ GUI worker, progress signal, cancellation flow를 구현하라.
 
 ```bash
 python3 scripts/validate_project.py
-QT_QPA_PLATFORM=offscreen uv run pytest -m gui
+python3 scripts/run_gui_tests.py
 ```
 
 ## 검증 절차

@@ -38,11 +38,13 @@ ResultQualityGraph를 문서 계약에 맞춰 구현하라.
 3. 자동 수정 loop를 구현하라.
    - 자동 수정 attempt는 최대 2회다.
    - correction은 RenderPlan 수정, mask 수정, backend escalation, rerender로 제한한다.
-   - unresolved `error`/`critical` issue 또는 필수 사용자 확인 대기가 있으면 export eligibility를 false로 유지한다.
+   - unresolved `error`/`critical` issue 또는 `requires_user_confirmation` 필수 사용자 확인 대기가 있으면 export eligibility를 false로 유지한다.
+   - visual mode off로 최종 시각 품질을 확인하지 못한 결과는 `requires_user_confirmation`을 유지한다.
+   - 강제 export는 `ForceApprovalRecord`와 사용자 사유(reason)를 요구한다.
 4. 테스트를 추가하라.
    - 권장 파일: `/tests/unit/workflows/test_result_quality_graph.py`
    - 권장 파일: `/tests/integration/test_result_quality_graph_mock.py`
-   - clipping, overlap, glyph, visual mode off confirmation, max correction attempt, export blocked를 검증하라.
+   - clipping, overlap, glyph, visual mode off confirmation, `requires_user_confirmation`, max correction attempt, export blocked를 검증하라.
 
 ## Acceptance Criteria
 

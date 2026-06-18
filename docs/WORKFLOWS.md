@@ -10,6 +10,14 @@
 - graph stream update는 GUI용 `JobSnapshot`으로 변환한다.
 - 각 node는 시작·완료·재시도·실패 이벤트를 기록한다.
 
+Checkpoint 저장 가능 상태:
+
+- Workflow state와 interrupt payload는 `JSON-serializable` 값만 포함한다.
+- Pydantic DTO는 checkpoint 저장 전 `model_dump(mode="json")` 결과로 표현 가능해야 한다.
+- 저장 가능한 값은 str, int, float, bool, null, list, dict와 그 조합으로 제한한다.
+- 파일이나 이미지 자체는 저장하지 않고 stable image reference 또는 safe local path string만 저장한다.
+- 금지: `Path`, PIL image, NumPy array, raw provider payload, full prompt, API key, image/crop bytes.
+
 공통 routing 결과:
 
 ```text

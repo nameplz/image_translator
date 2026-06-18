@@ -27,9 +27,10 @@
 2. export gate 정책을 구현하라.
    - 권장 파일: `/src/image_translator/services/export_gate.py`
    - unresolved `error` 또는 `critical` issue가 있으면 일반 export를 차단한다.
-   - 필수 사용자 확인 대기가 있으면 일반 export를 차단한다.
+   - `requires_user_confirmation` 필수 사용자 확인 대기가 있으면 일반 export를 차단한다.
+   - visual mode off로 최종 시각 품질을 확인하지 못한 결과는 `requires_user_confirmation`을 유지한다.
    - `warning`은 사용자 확인 후 일반 export 가능해야 한다.
-   - 강제 export는 `ForceApprovalRecord` 같은 명시적 record를 요구해야 한다.
+   - 강제 export는 `ForceApprovalRecord` 같은 명시적 record와 사용자 사유(reason)를 요구해야 한다.
 3. 필요한 domain 타입이 부족하면 step1의 파일에 최소 범위로 추가하라.
 4. 테스트를 먼저 추가하고 정책 구현을 통과시켜라.
    - 권장 파일: `/tests/unit/services/test_quality_policy.py`

@@ -46,7 +46,8 @@
 ## 6. Checkpoint와 Local Data
 
 - SQLite checkpoint와 프로젝트 데이터는 OS app data 경로에 저장한다.
-- 이미지 배열, API key, provider raw payload, 전체 prompt를 저장하지 않는다.
+- checkpoint state는 `model_dump(mode="json")` 가능한 JSON-serializable 값으로 제한한다.
+- `Path`, PIL image, NumPy array, 이미지 배열, image/crop bytes, API key, provider raw payload, 전체 prompt를 저장하지 않는다.
 - 필요한 이미지 reference는 사용자가 접근 가능한 로컬 경로만 저장한다.
 - checkpoint 파일 권한을 가능한 범위에서 사용자 전용으로 제한한다.
 - 완료·실패 checkpoint는 기본 30일 후 정리할 수 있다.

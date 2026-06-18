@@ -23,6 +23,8 @@
    - `pillow`
    - `numpy`
    - `opencv-python-headless`
+   - dependency 추가는 `uv add pillow numpy opencv-python-headless`로 수행하고 `uv.lock`을 함께 갱신하라.
+   - dependency 도입과 같은 변경에서 `AGENTS.md`의 현재 상태, `tests/unit/test_bootstrap_contract.py`, 관련 문서를 함께 갱신하라.
 2. 이미지 reference와 파일 검증 service를 구현하라.
    - 권장 파일: `/src/image_translator/domain/image.py`
    - 권장 파일: `/src/image_translator/services/image_io.py`

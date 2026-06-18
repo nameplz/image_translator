@@ -23,6 +23,9 @@ PySide6 기반 Main Window skeleton과 GUI test 기반을 구현하라.
 1. `pyproject.toml`에 GUI dependency를 추가하라.
    - `PySide6`
    - dev dependency에 `pytest-qt`
+   - runtime dependency는 `uv add PySide6`로 추가하라.
+   - dev dependency는 `uv add --dev pytest-qt`로 추가하라.
+   - dependency 도입과 같은 변경에서 `uv.lock`, `AGENTS.md`의 현재 상태, `tests/unit/test_bootstrap_contract.py`, 관련 문서를 함께 갱신하라.
 2. GUI application entrypoint와 main window를 구현하라.
    - 권장 파일: `/src/image_translator/app/main.py`
    - 권장 파일: `/src/image_translator/gui/main_window.py`
@@ -40,7 +43,7 @@ PySide6 기반 Main Window skeleton과 GUI test 기반을 구현하라.
 
 ```bash
 python3 scripts/validate_project.py
-QT_QPA_PLATFORM=offscreen uv run pytest -m gui
+python3 scripts/run_gui_tests.py
 ```
 
 ## 검증 절차

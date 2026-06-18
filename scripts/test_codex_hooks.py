@@ -196,6 +196,34 @@ python_version = "3.12"
     ]
 
 
+def test_image_translator_validation_profile_matches_committed_gate():
+    harness_validation = load_script("harness_validation")
+
+    generated = harness_validation.build_validation_config(ROOT)
+    committed = json.loads((ROOT / ".harness" / "validation.json").read_text())
+
+    assert generated == committed
+
+
+def test_configure_harness_dry_run_preserves_image_translator_strict_gate():
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts" / "configure_harness.py"),
+            "--root",
+            str(ROOT),
+            "--dry-run",
+        ],
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0
+    assert json.loads(result.stdout) == json.loads(
+        (ROOT / ".harness" / "validation.json").read_text()
+    )
+
+
 def test_build_validation_config_detects_node_stack(tmp_path):
     harness_validation = load_script("harness_validation")
     package_json = {
@@ -256,6 +284,44 @@ def test_configure_harness_blocks_unresolved_placeholders(tmp_path):
     assert result.returncode == 2
     assert "Unresolved Harness placeholders" in result.stderr
     assert not (tmp_path / ".harness" / "validation.json").exists()
+
+
+def test_gui_test_wrapper_skips_until_gui_contract_exists(tmp_path):
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts" / "run_gui_tests.py"),
+            "--root",
+            str(tmp_path),
+        ],
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0
+    assert "skipped" in result.stdout.lower()
+
+
+def test_gui_test_wrapper_detects_gui_contract(tmp_path):
+    run_gui_tests = load_script("run_gui_tests")
+    dependency_root = tmp_path / "dependency_root"
+    dependency_root.mkdir()
+    (dependency_root / "pyproject.toml").write_text(
+        """
+[project]
+dependencies = ["PySide6"]
+""",
+        encoding="utf-8",
+    )
+
+    assert run_gui_tests._gui_contract_exists(dependency_root)
+
+    tests_root = tmp_path / "tests_root"
+    tests_dir = tests_root / "tests" / "gui"
+    tests_dir.mkdir(parents=True)
+    (tests_dir / "test_main_window.py").write_text("def test_placeholder():\n    assert True\n")
+
+    assert run_gui_tests._gui_contract_exists(tests_root)
 
 
 def test_configure_harness_writes_validation_config(tmp_path):

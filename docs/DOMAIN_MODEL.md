@@ -373,6 +373,7 @@ cancelled
 - unresolved issues
 - approval status
 - export eligibility
+- `requires_user_confirmation` reasons
 
 ## 12. Export Model
 
@@ -387,7 +388,7 @@ cancelled
 ### `ForceApprovalRecord`
 
 - user-visible issue list
-- reason
+- 사용자 사유(reason)
 - timestamp
 - affected revision
 
@@ -401,4 +402,4 @@ cancelled
 - 승인되지 않은 프로젝트 컨텍스트는 이후 page에 적용하지 않는다.
 - 자연어 수정은 승인된 RevisionPlan 없이 적용할 수 없다.
 - 완료 revision은 mutation하지 않는다.
-- 미해결 `error`/`critical` issue 또는 필수 사용자 확인 대기가 있는 결과는 일반 export 대상이 아니다.
+- 미해결 `error`/`critical` issue 또는 `requires_user_confirmation` 필수 사용자 확인 대기가 있는 결과는 일반 export 대상이 아니다.

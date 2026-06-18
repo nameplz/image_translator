@@ -122,12 +122,12 @@ GUI에 전달하는 immutable 진행 이벤트다.
 
 LangGraph checkpoint 대상이다. workflow 내부에서만 소유한다.
 
-- 직렬화 가능한 domain DTO
+- `model_dump(mode="json")` 가능한 JSON-serializable domain DTO
 - region별 attempt와 decision
 - provider request fingerprint
 - interrupt payload
 
-이미지 배열, secret, provider raw payload는 포함하지 않는다.
+`Path`, PIL image, NumPy array, 이미지 배열, image/crop bytes, secret, 전체 prompt, provider raw payload는 포함하지 않는다.
 
 ### ImageDocumentSession
 

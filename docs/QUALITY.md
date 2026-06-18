@@ -154,6 +154,10 @@ visual mode가 활성화된 경우:
 - 전체 페이지 시선 흐름
 - 결과물 가독성
 
+visual mode off에서는 최종 시각 품질을 AI가 확인하지 않았으므로 결과에
+`requires_user_confirmation=["visual_quality_unconfirmed"]`를 남긴다. 이 확인 대기가 해결되기
+전에는 unresolved `error`/`critical` issue가 없어도 일반 export를 차단한다.
+
 ### 자동 수정
 
 - 줄바꿈, 글자 크기, 자간, 행간, 정렬
@@ -185,11 +189,12 @@ cancelled
 ```
 
 `approved_forced`에는 사용자, 시각, 미해결 issue, 사유를 기록한다.
+강제 export는 `ForceApprovalRecord`와 사용자 사유(reason)를 별도로 요구한다.
 
 Export를 차단하는 blocking 상태:
 
 - 미해결 `error` 또는 `critical` issue
-- visual mode off 등으로 인해 필수 사용자 확인이 아직 완료되지 않은 상태
+- visual mode off 등으로 인해 `requires_user_confirmation` 필수 사용자 확인이 아직 완료되지 않은 상태
 
 `warning`은 사용자 확인 후 일반 export할 수 있다.
 

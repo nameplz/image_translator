@@ -141,13 +141,18 @@ uv run pytest -q
 uv run pytest --cov=src --cov-report=term-missing --cov-fail-under=80
 uv run ruff check .
 uv run mypy src
+python3 scripts/run_gui_tests.py
 ```
 
 GUI:
 
 ```bash
-QT_QPA_PLATFORM=offscreen uv run pytest -m gui
+python3 scripts/run_gui_tests.py
 ```
+
+GUI wrapper는 `QT_QPA_PLATFORM=offscreen`을 설정한다. PySide6/pytest-qt 또는
+`tests/gui`가 없으면 bootstrap 상태로 간주해 skip하고, GUI dependency 또는 GUI test가
+도입된 뒤에는 `uv run pytest -m gui` 실패를 전체 validation 실패로 반환한다.
 
 Provider:
 

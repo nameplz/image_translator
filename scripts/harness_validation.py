@@ -13,6 +13,29 @@ from typing import Any
 HARNESS_VALIDATION_FILE = Path(".harness") / "validation.json"
 VALIDATION_TIMEOUT_SECONDS = 300
 VALIDATION_SCRIPT_ORDER = ("lint", "typecheck", "build", "test")
+IMAGE_TRANSLATOR_PROJECT_NAME = "image-translator"
+IMAGE_TRANSLATOR_STRICT_COMMANDS: tuple[tuple[str, tuple[str, ...], str], ...] = (
+    ("test", ("uv", "run", "pytest", "-q"), "Run Python tests"),
+    (
+        "coverage",
+        (
+            "uv",
+            "run",
+            "pytest",
+            "--cov=src",
+            "--cov-report=term-missing",
+            "--cov-fail-under=80",
+        ),
+        "Verify Python test coverage",
+    ),
+    ("lint", ("uv", "run", "ruff", "check", "."), "Run Python lint rules"),
+    ("typecheck", ("uv", "run", "mypy", "src"), "Run Python type checks"),
+    (
+        "gui",
+        ("python3", "scripts/run_gui_tests.py"),
+        "Run GUI tests with offscreen Qt when the GUI contract exists",
+    ),
+)
 PYTHON_COMPILEALL_EXCLUDE_PATTERN = (
     r"(^|/)(\.git|\.hg|\.svn|\.codex|\.agents|\.harness|\.venv|venv|env|node_modules|__pycache__|"
     r"\.pytest_cache|\.mypy_cache|\.ruff_cache|build|dist)(/|$)"
@@ -378,11 +401,42 @@ def _python_commands(
     return commands
 
 
+def _image_translator_strict_commands() -> list[dict[str, Any]]:
+    return [
+        {"name": name, "command": list(command), "reason": reason}
+        for name, command, reason in IMAGE_TRANSLATOR_STRICT_COMMANDS
+    ]
+
+
+def _detect_image_translator_strict_config(
+    root: Path,
+    pyproject: dict[str, Any],
+) -> dict[str, Any] | None:
+    project = pyproject.get("project")
+    if not isinstance(project, dict):
+        return None
+    if project.get("name") != IMAGE_TRANSLATOR_PROJECT_NAME:
+        return None
+    if not (root / "AGENTS.md").exists():
+        return None
+
+    return {
+        "language": "python",
+        "stack": "python",
+        "package_manager": "uv",
+        "commands": _image_translator_strict_commands(),
+    }
+
+
 def _detect_python_config(root: Path) -> dict[str, Any] | None:
     if not _python_has_project_evidence(root):
         return None
 
     pyproject = _read_toml(root / "pyproject.toml")
+    strict_config = _detect_image_translator_strict_config(root, pyproject)
+    if strict_config is not None:
+        return strict_config
+
     package_manager = _python_package_manager(root, pyproject)
     return {
         "language": "python",

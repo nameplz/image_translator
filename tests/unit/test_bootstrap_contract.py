@@ -47,4 +47,5 @@ def test_harness_validation_uses_strict_uv_gate() -> None:
         ],
         ["uv", "run", "ruff", "check", "."],
         ["uv", "run", "mypy", "src"],
+        ["python3", "scripts/run_gui_tests.py"],
     ]

@@ -5,7 +5,12 @@
   "commands": [
     {
       "name": "test",
-      "command": ["uv", "run", "pytest", "-q"],
+      "command": [
+        "uv",
+        "run",
+        "pytest",
+        "-q"
+      ],
       "reason": "Run Python tests"
     },
     {
@@ -22,13 +27,32 @@
     },
     {
       "name": "lint",
-      "command": ["uv", "run", "ruff", "check", "."],
+      "command": [
+        "uv",
+        "run",
+        "ruff",
+        "check",
+        "."
+      ],
       "reason": "Run Python lint rules"
     },
     {
       "name": "typecheck",
-      "command": ["uv", "run", "mypy", "src"],
+      "command": [
+        "uv",
+        "run",
+        "mypy",
+        "src"
+      ],
       "reason": "Run Python type checks"
+    },
+    {
+      "name": "gui",
+      "command": [
+        "python3",
+        "scripts/run_gui_tests.py"
+      ],
+      "reason": "Run GUI tests with offscreen Qt when the GUI contract exists"
     }
   ]
 }
