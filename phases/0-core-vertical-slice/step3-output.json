@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 2,
+  "phase": "0-core-vertical-slice",
+  "step": 3,
+  "name": "provider-contracts-mocks",
+  "attempt": 1,
+  "worker": {
+    "type": "subagent"
+  },
+  "stepStatus": {
+    "status": "completed",
+    "summary": "provider protocols와 deterministic mock adapters 구현",
+    "errorMessage": null,
+    "blockedReason": null
+  },
+  "changedFiles": [
+    "src/image_translator/providers/__init__.py",
+    "src/image_translator/providers/base.py",
+    "src/image_translator/providers/mock.py",
+    "tests/unit/providers/test_provider_contracts.py"
+  ],
+  "validation": [
+    "rtk uv run pytest -q tests/unit/providers/test_provider_contracts.py: initially failed RED with missing provider module, then passed with 10 passed",
+    "rtk uv run ruff check .: passed after import-order fix",
+    "rtk uv run mypy src: passed",
+    "rtk python3 scripts/validate_project.py: passed, Project validation passed"
+  ],
+  "timestamps": {
+    "startedAt": "2026-06-19T21:24:05+0900",
+    "finishedAt": "2026-06-19T21:36:24+0900",
+    "recordedAt": "2026-06-19T21:36:24+0900"
+  }
+}
