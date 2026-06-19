@@ -14,7 +14,10 @@
     {
       "step": 1,
       "name": "domain-core-models",
-      "status": "pending"
+      "status": "completed",
+      "started_at": "2026-06-19T21:05:10+0900",
+      "summary": "immutable domain core models와 invariant tests 추가",
+      "completed_at": "2026-06-19T21:13:10+0900"
     },
     {
       "step": 2,

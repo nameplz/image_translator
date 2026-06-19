@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 2,
+  "phase": "0-core-vertical-slice",
+  "step": 1,
+  "name": "domain-core-models",
+  "attempt": 1,
+  "worker": {
+    "type": "subagent"
+  },
+  "stepStatus": {
+    "status": "completed",
+    "summary": "immutable domain core models와 invariant tests 추가",
+    "errorMessage": null,
+    "blockedReason": null
+  },
+  "changedFiles": [
+    "src/image_translator/domain/__init__.py",
+    "src/image_translator/domain/_base.py",
+    "src/image_translator/domain/errors.py",
+    "src/image_translator/domain/geometry.py",
+    "src/image_translator/domain/ids.py",
+    "src/image_translator/domain/job.py",
+    "src/image_translator/domain/ocr.py",
+    "src/image_translator/domain/quality.py",
+    "src/image_translator/domain/translation.py",
+    "tests/unit/domain/test_geometry.py",
+    "tests/unit/domain/test_job_models.py",
+    "tests/unit/domain/test_ocr_models.py",
+    "tests/unit/domain/test_quality_models.py"
+  ],
+  "validation": [
+    "rtk uv run pytest -q tests/unit/domain: initially failed before implementation as expected, then passed with 13 passed",
+    "rtk uv run ruff check .: passed",
+    "rtk uv run mypy src: passed",
+    "rtk python3 scripts/validate_project.py: initially failed in sandbox due uv cache permission",
+    "rtk python3 scripts/validate_project.py with escalation: passed, Project validation passed"
+  ],
+  "timestamps": {
+    "startedAt": "2026-06-19T21:05:10+0900",
+    "finishedAt": "2026-06-19T21:13:10+0900",
+    "recordedAt": "2026-06-19T21:13:10+0900"
+  }
+}
