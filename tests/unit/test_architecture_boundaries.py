@@ -128,6 +128,20 @@ def test_services_do_not_import_provider_layer() -> None:
         )
 
 
+def test_use_cases_do_not_import_provider_layer() -> None:
+    for path in _iter_python_files("use_cases"):
+        provider_imports = [
+            import_name
+            for import_name in _imported_modules(path)
+            if import_name == "image_translator.providers"
+            or import_name.startswith("image_translator.providers.")
+        ]
+
+        assert not provider_imports, (
+            f"{path.relative_to(ROOT)} imports provider layer directly: {provider_imports}"
+        )
+
+
 def test_gui_imports_do_not_bypass_use_cases() -> None:
     for path in _iter_python_files("gui"):
         bypass_imports = [
