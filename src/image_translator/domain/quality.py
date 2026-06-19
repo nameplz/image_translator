@@ -13,6 +13,16 @@ class QualitySeverity(StrEnum):
     critical = "critical"
 
 
+class ApprovalStatus(StrEnum):
+    pending = "pending"
+    approved_automatic = "approved_automatic"
+    approved_user = "approved_user"
+    approved_forced = "approved_forced"
+    needs_review = "needs_review"
+    rejected = "rejected"
+    cancelled = "cancelled"
+
+
 class QualityIssue(DomainModel):
     issue_code: NonEmptyStr
     severity: QualitySeverity
@@ -44,3 +54,11 @@ class RegionReview(DomainModel):
     evidence_summary: NonEmptyStr
     improvement_instruction: NonEmptyStr | None = None
     decision: NonEmptyStr
+
+
+class QualityApprovalDecision(DomainModel):
+    approved: bool
+    status: ApprovalStatus
+    weighted_total_score: FiniteScore
+    reason_codes: tuple[NonEmptyStr, ...] = ()
+    blocking_issue_codes: tuple[NonEmptyStr, ...] = ()

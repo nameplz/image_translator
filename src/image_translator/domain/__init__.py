@@ -14,6 +14,14 @@ from image_translator.domain.errors import (
     TranslationResultMismatchError,
     WorkflowCancelled,
 )
+from image_translator.domain.export import (
+    VISUAL_QUALITY_UNCONFIRMED,
+    ApprovalStatus,
+    ExportEligibilityDecision,
+    ExportMode,
+    FinalImageResult,
+    ForceApprovalRecord,
+)
 from image_translator.domain.geometry import Point, Polygon, RegionGeometry, RotatedBoundingBox
 from image_translator.domain.ids import (
     JobId,
@@ -36,6 +44,7 @@ from image_translator.domain.ocr import (
     WritingMode,
 )
 from image_translator.domain.quality import (
+    QualityApprovalDecision,
     QualityIssue,
     QualitySeverity,
     RegionReview,
@@ -48,9 +57,15 @@ from image_translator.domain.translation import (
 )
 
 __all__ = [
+    "VISUAL_QUALITY_UNCONFIRMED",
+    "ApprovalStatus",
     "CheckpointError",
     "DomainError",
+    "ExportEligibilityDecision",
     "ExportBlockedError",
+    "ExportMode",
+    "FinalImageResult",
+    "ForceApprovalRecord",
     "ImageLoadError",
     "InvalidRegionError",
     "JobDefinition",
@@ -66,6 +81,7 @@ __all__ = [
     "ProviderCallError",
     "ProviderConfigError",
     "ProviderRequestId",
+    "QualityApprovalDecision",
     "QualityGateRejected",
     "QualityIssue",
     "QualitySeverity",
