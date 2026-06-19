@@ -38,7 +38,10 @@
     {
       "step": 4,
       "name": "mock-workflow-use-case",
-      "status": "pending"
+      "status": "completed",
+      "started_at": "2026-06-19T21:37:27+0900",
+      "summary": "mock provider 기반 core workflow use case 구현",
+      "completed_at": "2026-06-19T21:51:41+0900"
     }
   ]
 }

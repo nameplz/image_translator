@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 2,
+  "phase": "0-core-vertical-slice",
+  "step": 4,
+  "name": "mock-workflow-use-case",
+  "attempt": 1,
+  "worker": {
+    "type": "subagent"
+  },
+  "stepStatus": {
+    "status": "completed",
+    "summary": "mock provider 기반 core workflow use case 구현",
+    "errorMessage": null,
+    "blockedReason": null
+  },
+  "changedFiles": [
+    "src/image_translator/use_cases/__init__.py",
+    "src/image_translator/use_cases/run_image_translation.py",
+    "src/image_translator/workflows/__init__.py",
+    "src/image_translator/workflows/mock_core.py",
+    "src/image_translator/workflows/result_quality.py",
+    "src/image_translator/workflows/translation_quality.py",
+    "tests/integration/test_mock_core_workflow.py",
+    "tests/unit/test_architecture_boundaries.py"
+  ],
+  "validation": [
+    "rtk uv run pytest -q tests/integration/test_mock_core_workflow.py: RED failed first with missing use case, then passed with 3 passed",
+    "rtk uv run pytest -q tests/unit/test_architecture_boundaries.py::test_use_cases_do_not_import_provider_layer: failed before boundary fix, then passed",
+    "rtk uv run pytest -q tests/unit/test_architecture_boundaries.py: passed with 5 passed",
+    "rtk uv run pytest -q tests/unit/test_architecture_boundaries.py tests/integration/test_mock_core_workflow.py: passed with 8 passed",
+    "rtk uv run ruff check .: passed after import-order fix and cache escalation",
+    "rtk uv run mypy src: passed after cache escalation",
+    "rtk python3 scripts/validate_project.py: sandbox uv cache failure first, then escalated pass with Project validation passed"
+  ],
+  "timestamps": {
+    "startedAt": "2026-06-19T21:37:27+0900",
+    "finishedAt": "2026-06-19T21:51:41+0900",
+    "recordedAt": "2026-06-19T21:51:41+0900"
+  }
+}
