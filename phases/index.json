@@ -7,7 +7,8 @@
     },
     {
       "dir": "1-image-layout-rendering",
-      "status": "pending"
+      "status": "completed",
+      "completed_at": "2026-06-20T10:39:58+0900"
     },
     {
       "dir": "2-workflow-provider-runtime",
