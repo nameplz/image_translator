@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 2,
+  "phase": "1-image-layout-rendering",
+  "step": 1,
+  "name": "ocr-normalization",
+  "attempt": 1,
+  "worker": {
+    "type": "subagent"
+  },
+  "stepStatus": {
+    "status": "completed",
+    "summary": "OCR normalization and configurable OCR risk scoring services implemented with focused unit coverage.",
+    "errorMessage": null,
+    "blockedReason": null
+  },
+  "changedFiles": [
+    "src/image_translator/services/ocr_normalization.py",
+    "src/image_translator/services/ocr_risk.py",
+    "tests/unit/services/test_ocr_normalization.py",
+    "tests/unit/services/test_ocr_risk.py"
+  ],
+  "validation": [
+    "rtk uv run pytest -q tests/unit/services/test_ocr_normalization.py tests/unit/services/test_ocr_risk.py: passed, 11 tests",
+    "rtk uv run ruff check .: passed",
+    "rtk uv run mypy src: passed",
+    "rtk python3 scripts/validate_project.py: passed"
+  ],
+  "timestamps": {
+    "startedAt": "2026-06-20T10:10:19+0900",
+    "finishedAt": "2026-06-20T10:15:09+0900",
+    "recordedAt": "2026-06-20T10:15:09+0900"
+  }
+}

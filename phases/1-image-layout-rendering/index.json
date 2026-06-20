@@ -14,7 +14,10 @@
     {
       "step": 1,
       "name": "ocr-normalization",
-      "status": "pending"
+      "status": "completed",
+      "started_at": "2026-06-20T10:10:19+0900",
+      "summary": "OCR normalization과 risk scoring service 구현",
+      "completed_at": "2026-06-20T10:15:09+0900"
     },
     {
       "step": 2,
