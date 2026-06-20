@@ -30,7 +30,10 @@
     {
       "step": 3,
       "name": "inpainting-rendering",
-      "status": "pending"
+      "status": "completed",
+      "started_at": "2026-06-20T10:22:56+0900",
+      "summary": "local inpainting, rendering, deterministic result validation 구현",
+      "completed_at": "2026-06-20T10:31:25+0900"
     },
     {
       "step": 4,
