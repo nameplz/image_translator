@@ -43,7 +43,12 @@ class RevisionPlanRejected(DomainError):
 
 
 class ExportBlockedError(DomainError):
-    """Raised when unresolved blocking issues prevent normal export."""
+    """Raised when unresolved blocking issues or file policy prevent export."""
+
+    def __init__(self, user_message: str, diagnostic: str) -> None:
+        super().__init__(user_message)
+        self.user_message = user_message
+        self.diagnostic = diagnostic
 
 
 class WorkflowCancelled(DomainError):

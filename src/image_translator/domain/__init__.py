@@ -17,10 +17,15 @@ from image_translator.domain.errors import (
 from image_translator.domain.export import (
     VISUAL_QUALITY_UNCONFIRMED,
     ApprovalStatus,
+    ExportAuditSummary,
     ExportEligibilityDecision,
+    ExportFormat,
     ExportMode,
+    ExportRequest,
+    ExportResult,
     FinalImageResult,
     ForceApprovalRecord,
+    FormatOptions,
 )
 from image_translator.domain.geometry import Point, Polygon, RegionGeometry, RotatedBoundingBox
 from image_translator.domain.ids import (
@@ -71,10 +76,15 @@ __all__ = [
     "ApprovalStatus",
     "CheckpointError",
     "DomainError",
+    "ExportAuditSummary",
     "ExportEligibilityDecision",
     "ExportBlockedError",
+    "ExportFormat",
     "ExportMode",
+    "ExportRequest",
+    "ExportResult",
     "FinalImageResult",
+    "FormatOptions",
     "ForceApprovalRecord",
     "ImageLoadError",
     "ImageDimensions",
