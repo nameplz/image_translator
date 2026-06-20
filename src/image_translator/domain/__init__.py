@@ -32,6 +32,7 @@ from image_translator.domain.ids import (
     RevisionId,
     WorkflowThreadId,
 )
+from image_translator.domain.image import ImageDimensions, ImageFileReference, ImageFormat
 from image_translator.domain.job import JobDefinition, JobSnapshot, JobStatus
 from image_translator.domain.ocr import (
     NormalizedTextRegion,
@@ -67,6 +68,9 @@ __all__ = [
     "FinalImageResult",
     "ForceApprovalRecord",
     "ImageLoadError",
+    "ImageDimensions",
+    "ImageFileReference",
+    "ImageFormat",
     "InvalidRegionError",
     "JobDefinition",
     "JobId",

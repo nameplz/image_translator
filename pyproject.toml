@@ -7,6 +7,9 @@ requires-python = ">=3.11"
 dependencies = [
     "pydantic>=2",
     "langgraph",
+    "pillow>=12.2.0",
+    "numpy>=2.4.6",
+    "opencv-python-headless>=4.13.0.92",
 ]
 
 [dependency-groups]

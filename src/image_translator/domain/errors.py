@@ -8,6 +8,11 @@ class DomainError(Exception):
 class ImageLoadError(DomainError):
     """Raised when an input image cannot be loaded or validated."""
 
+    def __init__(self, user_message: str, diagnostic: str) -> None:
+        super().__init__(user_message)
+        self.user_message = user_message
+        self.diagnostic = diagnostic
+
 
 class InvalidRegionError(DomainError):
     """Raised when region geometry, ID, or structure is invalid."""

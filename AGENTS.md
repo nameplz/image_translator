@@ -6,7 +6,8 @@
 
 - 실제 package 이름은 `image_translator`다.
 - 현재 source tree는 최소 패키지 골격만 포함한다.
-- 현재 `pyproject.toml`의 runtime dependency는 `pydantic>=2`, `langgraph`다.
+- 현재 `pyproject.toml`의 runtime dependency는 `pydantic>=2`, `langgraph`,
+  `pillow`, `numpy`, `opencv-python-headless`다.
 - 현재 dev dependency는 `pytest`, `pytest-asyncio`, `pytest-cov`, `ruff`, `mypy`다.
 - `uv.lock`과 `.harness/validation.json`이 validation 기준이다.
 - `phases/`의 구현 phase와 step은 모두 아직 `pending`이다.
