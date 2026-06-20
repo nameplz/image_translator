@@ -22,7 +22,10 @@
     {
       "step": 2,
       "name": "reading-order-layout",
-      "status": "pending"
+      "status": "completed",
+      "started_at": "2026-06-20T10:16:39+0900",
+      "summary": "reading order, text role, ruby layout analysis 구현",
+      "completed_at": "2026-06-20T10:21:38+0900"
     },
     {
       "step": 3,

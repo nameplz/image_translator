@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 2,
+  "phase": "1-image-layout-rendering",
+  "step": 2,
+  "name": "reading-order-layout",
+  "attempt": 1,
+  "worker": {
+    "type": "subagent"
+  },
+  "stepStatus": {
+    "status": "completed",
+    "summary": "reading order, text role, and ruby layout analysis implemented",
+    "errorMessage": null,
+    "blockedReason": null
+  },
+  "changedFiles": [
+    "src/image_translator/services/layout_analysis.py",
+    "src/image_translator/services/text_role_classifier.py",
+    "tests/unit/services/test_layout_analysis.py",
+    "tests/unit/services/test_text_role_classifier.py"
+  ],
+  "validation": [
+    "rtk uv run pytest -q tests/unit/services/test_layout_analysis.py tests/unit/services/test_text_role_classifier.py: passed, 9 tests",
+    "rtk uv run ruff check .: passed",
+    "rtk uv run mypy src: passed",
+    "rtk python3 scripts/validate_project.py: passed after rerun with approved cache access"
+  ],
+  "timestamps": {
+    "startedAt": "2026-06-20T10:16:39+0900",
+    "finishedAt": "2026-06-20T10:21:38+0900",
+    "recordedAt": "2026-06-20T10:21:38+0900"
+  }
+}
