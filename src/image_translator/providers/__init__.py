@@ -40,6 +40,15 @@ from image_translator.providers.mock import (
     MockReviewAdapter,
     MockTranslatorAdapter,
 )
+from image_translator.providers.registry import ProviderRegistry, ProviderRegistryValidation
+from image_translator.providers.retry import (
+    ProviderAttemptState,
+    ProviderErrorClassification,
+    ProviderErrorKind,
+    ProviderRecoveryAction,
+    ProviderRetryPolicy,
+    classify_provider_error,
+)
 
 __all__ = [
     "MOCK_MODEL_ID",
@@ -63,8 +72,15 @@ __all__ = [
     "PageContextReview",
     "PageReview",
     "ProviderAdapter",
+    "ProviderAttemptState",
     "ProviderCapabilities",
     "ProviderConfigIssue",
+    "ProviderErrorClassification",
+    "ProviderErrorKind",
+    "ProviderRecoveryAction",
+    "ProviderRegistry",
+    "ProviderRegistryValidation",
+    "ProviderRetryPolicy",
     "ProviderType",
     "ProviderUsageMetadata",
     "RenderRequest",
@@ -77,5 +93,6 @@ __all__ = [
     "RevisionIntentRequest",
     "TranslationReviewRequest",
     "TranslatorAdapter",
+    "classify_provider_error",
     "redact_secret_values",
 ]
