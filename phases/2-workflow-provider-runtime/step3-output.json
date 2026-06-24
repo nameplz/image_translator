@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 2,
+  "phase": "2-workflow-provider-runtime",
+  "step": 3,
+  "name": "natural-revision-graph",
+  "attempt": 1,
+  "worker": {
+    "type": "subagent",
+    "id": "019ef8d2-4dfa-7360-a9f1-de59f838664b"
+  },
+  "stepStatus": {
+    "status": "completed",
+    "summary": "NaturalRevisionGraph와 append-only revision repository 구현",
+    "errorMessage": null,
+    "blockedReason": null
+  },
+  "changedFiles": [
+    "src/image_translator/domain/revision.py",
+    "src/image_translator/workflows/natural_revision.py",
+    "src/image_translator/persistence/revision_repository.py",
+    "src/image_translator/domain/__init__.py",
+    "src/image_translator/workflows/__init__.py",
+    "src/image_translator/persistence/__init__.py",
+    "tests/unit/workflows/test_natural_revision_graph.py",
+    "tests/unit/persistence/test_revision_repository.py"
+  ],
+  "validation": [
+    "uv run pytest -q tests/unit/workflows/test_natural_revision_graph.py tests/unit/persistence/test_revision_repository.py: passed",
+    "uv run ruff check .: passed",
+    "uv run mypy src: passed",
+    "python3 scripts/validate_project.py: passed"
+  ],
+  "timestamps": {
+    "startedAt": "2026-06-24T17:49:22+0900",
+    "finishedAt": "2026-06-24T17:57:52+0900",
+    "recordedAt": "2026-06-24T17:57:52+0900"
+  }
+}
