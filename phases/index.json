@@ -12,7 +12,8 @@
     },
     {
       "dir": "2-workflow-provider-runtime",
-      "status": "pending"
+      "status": "completed",
+      "completed_at": "2026-06-24T18:10:27+0900"
     },
     {
       "dir": "3-gui-export-release",

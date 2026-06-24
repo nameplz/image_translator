@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 2,
+  "phase": "2-workflow-provider-runtime",
+  "step": 4,
+  "name": "checkpoint-resume-runtime",
+  "attempt": 1,
+  "worker": {
+    "type": "subagent",
+    "id": "019ef8db-2a6b-7ab1-9fa5-956e7a4de6c9"
+  },
+  "stepStatus": {
+    "status": "completed",
+    "summary": "checkpoint/resume runtime과 progress mapper 구현",
+    "errorMessage": null,
+    "blockedReason": null
+  },
+  "changedFiles": [
+    "src/image_translator/config/resources.py",
+    "src/image_translator/persistence/checkpoints.py",
+    "src/image_translator/use_cases/resume_job.py",
+    "src/image_translator/observability/progress.py",
+    "src/image_translator/persistence/__init__.py",
+    "src/image_translator/use_cases/__init__.py",
+    "src/image_translator/observability/__init__.py",
+    "tests/unit/persistence/test_checkpoints.py",
+    "tests/unit/observability/test_progress.py",
+    "tests/integration/test_resume_mock_workflow.py"
+  ],
+  "validation": [
+    "uv run pytest -q tests/unit/persistence/test_checkpoints.py tests/unit/observability/test_progress.py tests/integration/test_resume_mock_workflow.py: passed",
+    "uv run ruff check .: passed",
+    "uv run mypy src: passed",
+    "python3 scripts/validate_project.py: passed"
+  ],
+  "timestamps": {
+    "startedAt": "2026-06-24T17:59:05+0900",
+    "finishedAt": "2026-06-24T18:10:27+0900",
+    "recordedAt": "2026-06-24T18:10:27+0900"
+  }
+}
