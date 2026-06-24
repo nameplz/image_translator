@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 2,
+  "phase": "2-workflow-provider-runtime",
+  "step": 2,
+  "name": "result-quality-graph",
+  "attempt": 1,
+  "worker": {
+    "type": "subagent",
+    "id": "019ef8c1-e525-7792-baba-c9fa61d58d37"
+  },
+  "stepStatus": {
+    "status": "completed",
+    "summary": "ResultQualityGraph correction loop와 export eligibility 연결 구현",
+    "errorMessage": null,
+    "blockedReason": null
+  },
+  "changedFiles": [
+    "src/image_translator/workflows/result_quality.py",
+    "src/image_translator/workflows/result_quality_support.py",
+    "tests/unit/workflows/test_result_quality_graph.py",
+    "tests/integration/test_result_quality_graph_mock.py"
+  ],
+  "validation": [
+    "uv run pytest -q tests/unit/workflows/test_result_quality_graph.py tests/integration/test_result_quality_graph_mock.py: passed",
+    "uv run pytest -q tests/integration/test_mock_core_workflow.py tests/unit/workflows/test_translation_quality_graph.py tests/integration/test_translation_quality_graph_mock.py: passed",
+    "uv run ruff check .: passed",
+    "uv run mypy src: passed",
+    "python3 scripts/validate_project.py: passed"
+  ],
+  "timestamps": {
+    "startedAt": "2026-06-24T17:31:31+0900",
+    "finishedAt": "2026-06-24T17:47:30+0900",
+    "recordedAt": "2026-06-24T17:47:30+0900"
+  }
+}
