@@ -65,6 +65,17 @@ from image_translator.domain.render import (
     RGBColor,
     TextAlignment,
 )
+from image_translator.domain.revision import (
+    ApprovalRecord,
+    RevisionAction,
+    RevisionApprovalStatus,
+    RevisionDomainDiff,
+    RevisionPlan,
+    RevisionProposal,
+    RevisionRecord,
+    RevisionScope,
+    RevisionTarget,
+)
 from image_translator.domain.translation import (
     TranslationCandidate,
     TranslationRequest,
@@ -74,6 +85,7 @@ from image_translator.domain.translation import (
 __all__ = [
     "VISUAL_QUALITY_UNCONFIRMED",
     "ApprovalStatus",
+    "ApprovalRecord",
     "CheckpointError",
     "DomainError",
     "ExportAuditSummary",
@@ -122,7 +134,15 @@ __all__ = [
     "RenderedPageReference",
     "RenderedRegion",
     "RevisionId",
+    "RevisionAction",
+    "RevisionApprovalStatus",
+    "RevisionDomainDiff",
     "RevisionPlanRejected",
+    "RevisionPlan",
+    "RevisionProposal",
+    "RevisionRecord",
+    "RevisionScope",
+    "RevisionTarget",
     "RotatedBoundingBox",
     "RubricScores",
     "TextAlignment",
