@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import sys
 from dataclasses import dataclass
 from enum import StrEnum
@@ -46,6 +47,31 @@ def resource_path(relative_path: str | Path = ".") -> Path:
     return DEFAULT_RESOURCE_LOCATOR.locate(relative_path).path
 
 
+def app_data_path(
+    relative_path: str | Path = ".",
+    *,
+    app_name: str = "Image Translator",
+) -> Path:
+    safe_relative_path = _safe_relative_path(relative_path)
+    override = os.environ.get("IMAGE_TRANSLATOR_APP_DATA_DIR")
+    if override:
+        return (Path(override).expanduser() / safe_relative_path).resolve()
+
+    if sys.platform == "darwin":
+        data_dir = Path.home() / "Library" / "Application Support" / app_name
+    elif sys.platform.startswith("win"):
+        base = os.environ.get("LOCALAPPDATA") or os.environ.get("APPDATA")
+        data_dir = Path(base).expanduser() / app_name if base else Path.home() / app_name
+    else:
+        base = os.environ.get("XDG_DATA_HOME")
+        data_dir = (
+            Path(base).expanduser() / "image-translator"
+            if base
+            else Path.home() / ".local" / "share" / "image-translator"
+        )
+    return (data_dir / safe_relative_path).resolve()
+
+
 def _safe_relative_path(relative_path: str | Path) -> Path:
     path = Path(relative_path)
     if path.is_absolute() or ".." in path.parts:
@@ -76,5 +102,6 @@ __all__ = [
     "ResourceLocation",
     "ResourceLocator",
     "ResourceRootKind",
+    "app_data_path",
     "resource_path",
 ]
