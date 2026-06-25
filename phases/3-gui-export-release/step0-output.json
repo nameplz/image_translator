@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 2,
+  "phase": "3-gui-export-release",
+  "step": 0,
+  "name": "gui-foundation",
+  "attempt": 1,
+  "worker": {
+    "type": "subagent",
+    "id": "019efe3d-d0e3-7423-aded-112a249d1920"
+  },
+  "stepStatus": {
+    "status": "completed",
+    "summary": "PySide6 main window skeleton과 GUI test 기반 구현",
+    "errorMessage": null,
+    "blockedReason": null
+  },
+  "changedFiles": [
+    "AGENTS.md",
+    "pyproject.toml",
+    "uv.lock",
+    "src/image_translator/app/main.py",
+    "src/image_translator/gui/__init__.py",
+    "src/image_translator/gui/controllers.py",
+    "src/image_translator/gui/main_window.py",
+    "tests/gui/test_main_window.py",
+    "tests/unit/test_bootstrap_contract.py"
+  ],
+  "validation": [
+    "rtk uv add PySide6: passed",
+    "rtk uv add --dev pytest-qt: passed",
+    "rtk python3 scripts/run_gui_tests.py: passed, 4 GUI tests passed",
+    "rtk uv run ruff check .: passed",
+    "rtk uv run mypy src: passed",
+    "rtk python3 scripts/validate_project.py: passed"
+  ],
+  "timestamps": {
+    "startedAt": "2026-06-25T19:04:39+0900",
+    "finishedAt": "2026-06-25T19:13:55+0900",
+    "recordedAt": "2026-06-25T19:13:55+0900"
+  }
+}
