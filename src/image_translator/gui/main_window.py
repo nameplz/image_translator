@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from uuid import uuid4
+
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QAction
 from PySide6.QtWidgets import (
@@ -17,14 +19,22 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from image_translator.domain.job import JobSnapshot
+from image_translator.domain.job import JobDefinition, JobSnapshot, JobStatus
 from image_translator.gui.controllers import MainWindowState
+from image_translator.gui.workers import ImageTranslationUseCase, ImageTranslationWorker
 
 
 class MainWindow(QMainWindow):
-    def __init__(self, state: MainWindowState | None = None) -> None:
+    def __init__(
+        self,
+        state: MainWindowState | None = None,
+        *,
+        use_case: ImageTranslationUseCase | None = None,
+    ) -> None:
         super().__init__()
         self._state = state or MainWindowState()
+        self._use_case = use_case
+        self._worker: ImageTranslationWorker | None = None
 
         self.open_action = self._create_action("openAction", "Open")
         self.run_action = self._create_action("runAction", "Run")
@@ -138,12 +148,8 @@ class MainWindow(QMainWindow):
     def _connect_placeholder_actions(self) -> None:
         self.open_action.triggered.connect(self._choose_input_image)
         self.output_path_action.triggered.connect(self._choose_output_path)
-        self.run_action.triggered.connect(
-            lambda: self.status_label.setText("Workflow worker is not configured.")
-        )
-        self.cancel_action.triggered.connect(
-            lambda: self.status_label.setText("Cancellation is not active.")
-        )
+        self.run_action.triggered.connect(self._start_translation)
+        self.cancel_action.triggered.connect(self._cancel_translation)
         self.save_as_action.triggered.connect(
             lambda: self.status_label.setText("Save As is available after export approval.")
         )
@@ -170,6 +176,65 @@ class MainWindow(QMainWindow):
         )
         if path:
             self.set_output_path(path)
+
+    def _start_translation(self) -> None:
+        if self._use_case is None:
+            self.status_label.setText("Workflow worker is not configured.")
+            return
+        if self._state.input_image_path is None:
+            self.status_label.setText("Select an image before running.")
+            return
+        if self._worker is not None:
+            self.status_label.setText("Workflow is already running.")
+            return
+
+        job = self._create_job_definition()
+        worker = ImageTranslationWorker(job=job, use_case=self._use_case)
+        worker.snapshot_received.connect(self.display_snapshot)
+        worker.finished.connect(self._clear_finished_worker)
+        self._worker = worker
+        self.display_snapshot(
+            JobSnapshot(
+                job_id=job.job_id,
+                status=JobStatus.preparing,
+                progress=0.0,
+                stage="prepare",
+                message="Starting workflow",
+                can_cancel=True,
+            )
+        )
+        worker.start()
+
+    def _cancel_translation(self) -> None:
+        if self._worker is None or not self._state.cancel_enabled:
+            self.status_label.setText("Cancellation is not active.")
+            return
+        self._state = self._state.with_cancelling()
+        self._refresh_from_state()
+        self._worker.cancel()
+
+    def _clear_finished_worker(self) -> None:
+        worker = self.sender()
+        if worker is self._worker:
+            self._worker.deleteLater()
+            self._worker = None
+
+    def _create_job_definition(self) -> JobDefinition:
+        if self._state.input_image_path is None:
+            raise RuntimeError("input image path is required before starting a workflow")
+        return JobDefinition(
+            job_id=f"gui-job-{uuid4().hex}",
+            project_id="default-project",
+            input_path=self._state.input_image_path,
+            requested_output_path=self._state.output_path,
+            source_language="ja",
+            target_language="ko",
+            provider_selection=(),
+            fallback_order=(),
+            visual_mode=False,
+            image_transmission_consent=False,
+            processing_profile="balanced",
+        )
 
     def _refresh_from_state(self) -> None:
         self.stage_label.setText(f"Stage: {self._state.stage_text}")

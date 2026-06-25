@@ -5,15 +5,24 @@ from dataclasses import dataclass, replace
 from image_translator.domain.job import JobSnapshot, JobStatus
 
 _ACTIVE_STATUSES = {
+    JobStatus.queued,
     JobStatus.preparing,
     JobStatus.ocr_running,
     JobStatus.analyzing_layout,
     JobStatus.translating,
     JobStatus.reviewing_translation,
+    JobStatus.waiting_for_user,
     JobStatus.inpainting,
     JobStatus.rendering,
     JobStatus.reviewing_result,
     JobStatus.exporting,
+}
+
+_TERMINAL_STATUSES = {
+    JobStatus.cancelled,
+    JobStatus.complete,
+    JobStatus.failed,
+    JobStatus.ready_to_export,
 }
 
 
@@ -22,10 +31,13 @@ class MainWindowState:
     input_image_path: str | None = None
     output_path: str | None = None
     latest_snapshot: JobSnapshot | None = None
+    cancelling: bool = False
 
     @property
     def is_running(self) -> bool:
-        return self.latest_snapshot is not None and self.latest_snapshot.status in _ACTIVE_STATUSES
+        return self.cancelling or (
+            self.latest_snapshot is not None and self.latest_snapshot.status in _ACTIVE_STATUSES
+        )
 
     @property
     def run_enabled(self) -> bool:
@@ -34,7 +46,8 @@ class MainWindowState:
     @property
     def cancel_enabled(self) -> bool:
         return (
-            self.latest_snapshot is not None
+            not self.cancelling
+            and self.latest_snapshot is not None
             and self.latest_snapshot.can_cancel
             and self.latest_snapshot.status in _ACTIVE_STATUSES
         )
@@ -54,6 +67,8 @@ class MainWindowState:
 
     @property
     def status_text(self) -> str:
+        if self.cancelling:
+            return "Cancelling workflow..."
         if self.latest_snapshot is None:
             return "Open an image to begin."
         return self.latest_snapshot.message
@@ -77,7 +92,26 @@ class MainWindowState:
         return replace(self, output_path=path)
 
     def with_snapshot(self, snapshot: JobSnapshot) -> MainWindowState:
-        return replace(self, latest_snapshot=snapshot)
+        if _is_stale_snapshot(self.latest_snapshot, snapshot):
+            return self
+        return replace(
+            self,
+            latest_snapshot=snapshot,
+            cancelling=self.cancelling and snapshot.status not in _TERMINAL_STATUSES,
+        )
+
+    def with_cancelling(self) -> MainWindowState:
+        return replace(self, cancelling=True)
+
+
+def _is_stale_snapshot(current: JobSnapshot | None, incoming: JobSnapshot) -> bool:
+    if current is None or current.job_id != incoming.job_id:
+        return False
+    if incoming.status in _TERMINAL_STATUSES:
+        return False
+    if current.status in _TERMINAL_STATUSES:
+        return True
+    return incoming.progress < current.progress
 
 
 __all__ = ["MainWindowState"]
