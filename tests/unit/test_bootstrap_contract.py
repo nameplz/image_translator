@@ -19,9 +19,17 @@ def test_project_metadata_declares_uv_python_package() -> None:
     assert "pillow>=12.2.0" in project["dependencies"]
     assert "numpy>=2.4.6" in project["dependencies"]
     assert "opencv-python-headless>=4.13.0.92" in project["dependencies"]
+    assert "pyside6>=6.11.1" in project["dependencies"]
 
     dev_dependencies = pyproject["dependency-groups"]["dev"]
-    for dependency in ("pytest", "pytest-asyncio", "pytest-cov", "ruff", "mypy"):
+    for dependency in (
+        "pytest",
+        "pytest-asyncio",
+        "pytest-cov",
+        "ruff",
+        "mypy",
+        "pytest-qt>=4.5.0",
+    ):
         assert dependency in dev_dependencies
 
 

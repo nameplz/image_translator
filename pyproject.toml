@@ -10,6 +10,7 @@ dependencies = [
     "pillow>=12.2.0",
     "numpy>=2.4.6",
     "opencv-python-headless>=4.13.0.92",
+    "pyside6>=6.11.1",
 ]
 
 [dependency-groups]
@@ -19,6 +20,7 @@ dev = [
     "pytest-cov",
     "ruff",
     "mypy",
+    "pytest-qt>=4.5.0",
 ]
 
 [build-system]

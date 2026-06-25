@@ -5,12 +5,13 @@
 이 저장소는 Image Translator의 Python 0.1.0 부트스트랩 상태다.
 
 - 실제 package 이름은 `image_translator`다.
-- 현재 source tree는 최소 패키지 골격만 포함한다.
+- 현재 source tree는 core/workflow layer와 최소 GUI foundation 골격을 포함한다.
 - 현재 `pyproject.toml`의 runtime dependency는 `pydantic>=2`, `langgraph`,
-  `pillow`, `numpy`, `opencv-python-headless`다.
-- 현재 dev dependency는 `pytest`, `pytest-asyncio`, `pytest-cov`, `ruff`, `mypy`다.
+  `pillow`, `numpy`, `opencv-python-headless`, `PySide6`다.
+- 현재 dev dependency는 `pytest`, `pytest-asyncio`, `pytest-cov`, `ruff`, `mypy`,
+  `pytest-qt`다.
 - `uv.lock`과 `.harness/validation.json`이 validation 기준이다.
-- `phases/`의 구현 phase와 step은 모두 아직 `pending`이다.
+- `phases/`는 0-2단계가 완료되었고 3단계 GUI/export release 구현을 진행 중이다.
 
 아래 MVP 기술과 제품 계약은 구현 목표다. PySide6, NumPy, Pillow, OpenCV,
 SQLite checkpointer, pytest-qt 같은 계획된 dependency를 사용하는 변경은 같은 변경에서
