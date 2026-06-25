@@ -21,6 +21,13 @@ from PySide6.QtWidgets import (
 
 from image_translator.domain.job import JobDefinition, JobSnapshot, JobStatus
 from image_translator.gui.controllers import MainWindowState
+from image_translator.gui.review_panel import (
+    RegionInspectorWidget,
+    ReviewQueueWidget,
+    ReviewRegionState,
+)
+from image_translator.gui.revision_panel import RevisionPlanPanel, RevisionPreviewState
+from image_translator.gui.viewer import ImageOverlayViewer
 from image_translator.gui.workers import ImageTranslationUseCase, ImageTranslationWorker
 
 
@@ -35,6 +42,8 @@ class MainWindow(QMainWindow):
         self._state = state or MainWindowState()
         self._use_case = use_case
         self._worker: ImageTranslationWorker | None = None
+        self._review_regions: tuple[ReviewRegionState, ...] = ()
+        self._selected_region_id: str | None = None
 
         self.open_action = self._create_action("openAction", "Open")
         self.run_action = self._create_action("runAction", "Run")
@@ -51,6 +60,10 @@ class MainWindow(QMainWindow):
         self.progress_bar.setObjectName("progressBar")
         self.status_label = QLabel()
         self.status_label.setObjectName("statusLabel")
+        self.overlay_viewer = ImageOverlayViewer(self)
+        self.region_inspector = RegionInspectorWidget(self)
+        self.review_queue = ReviewQueueWidget(self)
+        self.revision_panel = RevisionPlanPanel(self)
 
         self.setWindowTitle("Image Translator")
         self.resize(1180, 760)
@@ -71,6 +84,30 @@ class MainWindow(QMainWindow):
     def display_snapshot(self, snapshot: JobSnapshot) -> None:
         self._state = self._state.with_snapshot(snapshot)
         self._refresh_from_state()
+
+    def set_review_regions(self, regions: tuple[ReviewRegionState, ...]) -> None:
+        self._review_regions = regions
+        issues = tuple(issue for region in regions for issue in region.issues)
+        self.overlay_viewer.set_regions(
+            tuple(region_state.region for region_state in regions),
+            issues,
+        )
+        self.review_queue.set_regions(regions)
+        if self._selected_region_id is not None:
+            self.select_region(self._selected_region_id)
+
+    def select_region(self, region_id: str) -> None:
+        self._selected_region_id = region_id
+        self.overlay_viewer.select_region(region_id)
+        self.review_queue.select_region(region_id)
+        self.region_inspector.show_region(self._review_region_by_id(region_id))
+
+    def display_revision_preview_state(
+        self,
+        request_id: int,
+        state: RevisionPreviewState,
+    ) -> None:
+        self.revision_panel.display_preview_state(request_id=request_id, state=state)
 
     def _build_toolbar(self) -> None:
         toolbar = QToolBar("Main", self)
@@ -107,7 +144,7 @@ class MainWindow(QMainWindow):
         tabs = QTabWidget(parent)
         tabs.setObjectName("imageComparisonTabs")
         tabs.addTab(self._placeholder_page("Original image preview", tabs), "Original")
-        tabs.addTab(self._placeholder_page("OCR region overlay", tabs), "OCR Overlay")
+        tabs.addTab(self.overlay_viewer, "OCR Overlay")
         tabs.addTab(self._placeholder_page("Inpainted preview", tabs), "Inpainted")
         tabs.addTab(self._placeholder_page("Rendered result preview", tabs), "Result")
         return tabs
@@ -116,9 +153,9 @@ class MainWindow(QMainWindow):
         tabs = QTabWidget(parent)
         tabs.setObjectName("reviewTabs")
         tabs.setMinimumWidth(300)
-        tabs.addTab(self._placeholder_page("No region selected", tabs), "Region Inspector")
-        tabs.addTab(self._placeholder_page("Review queue is empty", tabs), "Review Queue")
-        tabs.addTab(self._placeholder_page("No revision plan", tabs), "Revision Plan")
+        tabs.addTab(self.region_inspector, "Region Inspector")
+        tabs.addTab(self.review_queue, "Review Queue")
+        tabs.addTab(self.revision_panel, "Revision Plan")
         return tabs
 
     def _build_bottom_bar(self, parent: QWidget) -> QFrame:
@@ -156,6 +193,8 @@ class MainWindow(QMainWindow):
         self.settings_action.triggered.connect(
             lambda: self.status_label.setText("Settings are not configured.")
         )
+        self.overlay_viewer.selected_region_changed.connect(self.select_region)
+        self.review_queue.region_selected.connect(self.select_region)
 
     def _choose_input_image(self) -> None:
         path, _selected_filter = QFileDialog.getOpenFileName(
@@ -247,6 +286,16 @@ class MainWindow(QMainWindow):
         self.run_action.setEnabled(self._state.run_enabled)
         self.cancel_action.setEnabled(self._state.cancel_enabled)
         self.save_as_action.setEnabled(self._state.save_as_enabled)
+
+    def _review_region_by_id(self, region_id: str) -> ReviewRegionState | None:
+        return next(
+            (
+                region_state
+                for region_state in self._review_regions
+                if region_state.region.region_id == region_id
+            ),
+            None,
+        )
 
     @staticmethod
     def _create_action(object_name: str, text: str) -> QAction:
