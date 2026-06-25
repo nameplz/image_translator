@@ -14,7 +14,10 @@
     {
       "step": 1,
       "name": "worker-progress-cancel",
-      "status": "pending"
+      "status": "completed",
+      "started_at": "2026-06-25T19:14:54+0900",
+      "completed_at": "2026-06-25T19:22:35+0900",
+      "summary": "GUI worker thread, progress signal, cancellation flow 구현"
     },
     {
       "step": 2,
