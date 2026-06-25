@@ -22,7 +22,10 @@
     {
       "step": 2,
       "name": "review-revision-ui",
-      "status": "pending"
+      "status": "completed",
+      "started_at": "2026-06-25T19:23:11+0900",
+      "completed_at": "2026-06-25T19:35:12+0900",
+      "summary": "review queue, region inspector, OCR overlay state, and revision plan preview UI implemented"
     },
     {
       "step": 3,

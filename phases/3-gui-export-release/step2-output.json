@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 2,
+  "phase": "3-gui-export-release",
+  "step": 2,
+  "name": "review-revision-ui",
+  "attempt": 1,
+  "worker": {
+    "type": "subagent",
+    "id": "019efe4e-78a1-7df2-a0f5-00a76ba3ca7c"
+  },
+  "stepStatus": {
+    "status": "completed",
+    "summary": "review queue, region inspector, OCR overlay state, and revision plan preview UI implemented",
+    "errorMessage": null,
+    "blockedReason": null
+  },
+  "changedFiles": [
+    "src/image_translator/gui/main_window.py",
+    "src/image_translator/gui/viewer.py",
+    "src/image_translator/gui/review_panel.py",
+    "src/image_translator/gui/revision_panel.py",
+    "tests/gui/test_review_revision_ui.py"
+  ],
+  "validation": [
+    "rtk uv run pytest -q tests/gui/test_review_revision_ui.py: 7 passed",
+    "rtk uv run pytest -q tests/gui: 14 passed",
+    "rtk uv run pytest -q tests/gui/test_review_revision_ui.py tests/unit/test_architecture_boundaries.py: 12 passed",
+    "rtk uv run ruff check src/image_translator/gui tests/gui/test_review_revision_ui.py: passed",
+    "rtk uv run mypy src/image_translator/gui: passed",
+    "rtk python3 scripts/validate_project.py: passed",
+    "rtk python3 scripts/run_gui_tests.py: 14 passed"
+  ],
+  "timestamps": {
+    "startedAt": "2026-06-25T19:23:11+0900",
+    "finishedAt": "2026-06-25T19:35:12+0900",
+    "recordedAt": "2026-06-25T19:35:12+0900"
+  }
+}
