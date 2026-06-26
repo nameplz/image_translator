@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 2,
+  "phase": "3-gui-export-release",
+  "step": 3,
+  "name": "settings-privacy-export-ui",
+  "attempt": 1,
+  "worker": {
+    "type": "subagent",
+    "id": "019f0319-fba3-7380-88e0-9ff03c1bc6f6",
+    "nickname": "Bacon"
+  },
+  "stepStatus": {
+    "status": "completed",
+    "summary": "provider/privacy settings와 export gate UI 구현",
+    "errorMessage": null,
+    "blockedReason": null
+  },
+  "changedFiles": [
+    "src/image_translator/gui/settings_dialog.py",
+    "src/image_translator/gui/export_controller.py",
+    "src/image_translator/gui/main_window.py",
+    "src/image_translator/gui/controllers.py",
+    "src/image_translator/use_cases/export_gate.py",
+    "src/image_translator/use_cases/__init__.py",
+    "tests/gui/test_settings_export_ui.py"
+  ],
+  "validation": [
+    "uv run pytest -q tests/gui: 21 passed",
+    "uv run ruff check src/image_translator/gui src/image_translator/use_cases tests/gui/test_settings_export_ui.py: passed",
+    "uv run mypy src: passed",
+    "python3 scripts/validate_project.py: passed",
+    "python3 scripts/run_gui_tests.py: 21 passed",
+    "python3 scripts/validate_project.py (main session): passed",
+    "python3 scripts/run_gui_tests.py (main session): 21 passed"
+  ],
+  "timestamps": {
+    "startedAt": "2026-06-26T17:43:53+0900",
+    "finishedAt": "2026-06-26T17:58:21+0900",
+    "recordedAt": "2026-06-26T17:58:21+0900"
+  }
+}
