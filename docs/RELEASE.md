@@ -106,3 +106,16 @@ Windows artifact 수용 기준:
 - [ ] migration과 rollback 검토
 - [ ] docs와 changelog 갱신
 - [ ] known issue와 미지원 기능 명시
+
+## 9. Release Scan Commands
+
+릴리스 후보에서는 기본 validation 외에 다음을 기록한다.
+
+```bash
+python3 scripts/security_release_scan.py
+uvx pip-audit --strict
+```
+
+`security_release_scan.py`는 committed config, log, test fixture 표면의 명백한 secret 값과
+개인 경로를 검사한다. Dependency audit은 네트워크와 advisory DB 접근이 필요할 수 있으므로
+기본 PR validation에는 포함하지 않고 release validation에서 별도로 실행한다.

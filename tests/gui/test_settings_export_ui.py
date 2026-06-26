@@ -133,6 +133,43 @@ def test_review_before_save_mode_controls_run_without_output_path(qtbot: Any) ->
     assert window.run_action.isEnabled() is True
 
 
+def test_main_window_does_not_create_output_file_before_quality_gate(
+    qtbot: Any,
+    tmp_path: Path,
+) -> None:
+    input_path = tmp_path / "source.png"
+    output_path = tmp_path / "result.png"
+    input_path.write_bytes(b"source")
+    window = MainWindow()
+    qtbot.addWidget(window)
+    window.set_input_image(str(input_path))
+    window.set_output_path(str(output_path))
+    window.display_snapshot(
+        JobSnapshot(
+            job_id="job-1",
+            status=JobStatus.ready_to_export,
+            progress=1.0,
+            stage="export_gate",
+            message="Ready to save",
+            can_cancel=False,
+        )
+    )
+
+    window.set_final_image_result(
+        FinalImageResult(
+            revision_id="revision-1",
+            approval_status=ApprovalStatus.approved_automatic,
+            unresolved_issues=(_issue("source_remnant", QualitySeverity.critical),),
+            visual_quality_checked=True,
+        )
+    )
+    window.save_as_action.trigger()
+
+    assert window.save_as_action.isEnabled() is False
+    assert output_path.exists() is False
+    assert "Save blocked" in window.status_label.text()
+
+
 def test_export_controller_requires_force_reason_for_blocked_export(tmp_path: Path) -> None:
     input_path = tmp_path / "source.png"
     output_path = tmp_path / "result.png"
@@ -193,6 +230,52 @@ def test_export_controller_records_forced_export_confirmation(tmp_path: Path) ->
     assert request.force_approval_record.unresolved_issue_codes == ("source_remnant",)
 
 
+def test_export_controller_confirms_overwrite_for_save_as_request(tmp_path: Path) -> None:
+    input_path = tmp_path / "source.png"
+    output_path = tmp_path / "result.png"
+    input_path.write_bytes(b"source")
+    output_path.write_bytes(b"existing")
+    confirmed_paths: list[Path] = []
+
+    def confirm_overwrite(path: Path) -> bool:
+        confirmed_paths.append(path)
+        return True
+
+    controller = ExportController(overwrite_confirmation=confirm_overwrite)
+    controller.set_input_path(str(input_path))
+    controller.set_final_image_result(_approved_result())
+
+    request = controller.prepare_export_request(output_path=str(output_path))
+
+    assert confirmed_paths == [output_path]
+    assert request.output_path == str(output_path)
+    assert request.overwrite_confirmed is True
+
+
+def test_export_controller_blocks_normal_save_until_required_confirmation(
+    tmp_path: Path,
+) -> None:
+    input_path = tmp_path / "source.png"
+    output_path = tmp_path / "result.png"
+    input_path.write_bytes(b"source")
+    controller = ExportController()
+    controller.set_input_path(str(input_path))
+    controller.set_output_path(str(output_path))
+    controller.set_final_image_result(
+        FinalImageResult(
+            revision_id="revision-1",
+            approval_status=ApprovalStatus.needs_review,
+            requires_user_confirmation=("visual_quality_unconfirmed",),
+            visual_quality_checked=False,
+        )
+    )
+
+    with pytest.raises(ExportControllerError, match="Save blocked"):
+        controller.prepare_export_request()
+
+    assert output_path.exists() is False
+
+
 def _settings_state(
     *,
     translator_provider_id: str = "mock-translator",
@@ -238,4 +321,12 @@ def _issue(issue_code: str, severity: QualitySeverity) -> QualityIssue:
         summary="source text remains visible",
         recommended_action="review before save",
         resolved=False,
+    )
+
+
+def _approved_result() -> FinalImageResult:
+    return FinalImageResult(
+        revision_id="revision-1",
+        approval_status=ApprovalStatus.approved_automatic,
+        visual_quality_checked=True,
     )

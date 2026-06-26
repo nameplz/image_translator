@@ -139,6 +139,19 @@ def test_revision_panel_displays_natural_revision_state(qtbot: Any) -> None:
     assert panel.target_regions_value.text() == "region-1, region-2"
 
 
+def test_main_window_displays_natural_revision_plan_preview(qtbot: Any) -> None:
+    window = MainWindow()
+    qtbot.addWidget(window)
+
+    window.revision_panel.display_plan(request_id=1, plan=_revision_plan(plan_id="plan-window"))
+
+    assert window.revision_panel.plan_id_value.text() == "plan-window"
+    assert window.revision_panel.target_status_value.text() == "resolved"
+    assert window.revision_panel.actions_value.text() == "adjust_tone"
+    assert "RevisionPlan preview ready" in window.revision_panel.status_label.text()
+    assert window.revision_panel.approve_button.isEnabled() is True
+
+
 def _review_state(region_id: str, approval_status: ApprovalStatus) -> ReviewRegionState:
     region = NormalizedTextRegion(
         region_id=region_id,
