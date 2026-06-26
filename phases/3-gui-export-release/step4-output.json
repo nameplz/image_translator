@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 2,
+  "phase": "3-gui-export-release",
+  "step": 4,
+  "name": "mock-mvp-integration-release-gates",
+  "attempt": 1,
+  "worker": {
+    "type": "subagent",
+    "id": "019f032f-52ce-7d11-b469-f9359a230883",
+    "nickname": "Linnaeus"
+  },
+  "stepStatus": {
+    "status": "completed",
+    "summary": "mock MVP integration, GUI, release readiness gates 보강",
+    "errorMessage": null,
+    "blockedReason": null
+  },
+  "changedFiles": [
+    "docs/RELEASE.md",
+    "scripts/security_release_scan.py",
+    "tests/gui/test_review_revision_ui.py",
+    "tests/gui/test_settings_export_ui.py",
+    "tests/integration/test_installed_resource_paths.py",
+    "tests/integration/test_mock_mvp_workflow.py",
+    "tests/integration/test_security_release_scan.py"
+  ],
+  "validation": [
+    "rtk uv run pytest -q tests/integration/test_mock_mvp_workflow.py tests/gui/test_settings_export_ui.py tests/gui/test_review_revision_ui.py tests/integration/test_installed_resource_paths.py tests/integration/test_security_release_scan.py: 30 passed",
+    "rtk python3 scripts/security_release_scan.py: passed",
+    "rtk uv run ruff check .: passed",
+    "rtk uv run mypy src: passed",
+    "rtk python3 scripts/validate_project.py: Project validation passed",
+    "rtk python3 scripts/run_gui_tests.py: 25 passed",
+    "python3 scripts/validate_project.py (main session): passed",
+    "python3 scripts/run_gui_tests.py (main session): 25 passed",
+    "python3 scripts/security_release_scan.py (main session): passed"
+  ],
+  "timestamps": {
+    "startedAt": "2026-06-26T18:07:11+0900",
+    "finishedAt": "2026-06-26T18:22:31+0900",
+    "recordedAt": "2026-06-26T18:22:31+0900"
+  }
+}
