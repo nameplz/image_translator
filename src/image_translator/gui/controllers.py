@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, replace
+from datetime import datetime
+from typing import Protocol
 
 from image_translator.domain.job import JobSnapshot, JobStatus
 
@@ -114,4 +116,32 @@ def _is_stale_snapshot(current: JobSnapshot | None, incoming: JobSnapshot) -> bo
     return incoming.progress < current.progress
 
 
-__all__ = ["MainWindowState"]
+@dataclass(frozen=True, slots=True)
+class ResumableCheckpointSummary:
+    job_id: str
+    input_path: str
+    stage: str
+    updated_at: datetime | None = None
+
+
+class ResumableCheckpointProvider(Protocol):
+    def __call__(self) -> tuple[ResumableCheckpointSummary, ...]: ...
+
+
+class ResumeListController:
+    def __init__(self, provider: ResumableCheckpointProvider | None = None) -> None:
+        self._provider = provider or _empty_resumable_checkpoints
+
+    def resumable_checkpoints(self) -> tuple[ResumableCheckpointSummary, ...]:
+        return self._provider()
+
+
+def _empty_resumable_checkpoints() -> tuple[ResumableCheckpointSummary, ...]:
+    return ()
+
+
+__all__ = [
+    "MainWindowState",
+    "ResumableCheckpointSummary",
+    "ResumeListController",
+]
