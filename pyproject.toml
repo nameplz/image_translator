@@ -31,11 +31,15 @@ build-backend = "hatchling.build"
 packages = ["src/image_translator"]
 
 [tool.pytest.ini_options]
-testpaths = ["scripts", "tests"]
+testpaths = ["scripts", "tests/unit", "tests/integration"]
 
 [tool.coverage.run]
 source = ["src"]
 branch = true
+omit = [
+    "src/image_translator/app/main.py",
+    "src/image_translator/gui/*",
+]
 
 [tool.coverage.report]
 show_missing = true

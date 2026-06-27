@@ -68,6 +68,13 @@ def test_gui_phase_uses_offscreen_wrapper_gate() -> None:
         assert "QT_QPA_PLATFORM=offscreen" not in text
 
 
+def test_pytest_conftest_sets_qt_offscreen_before_test_imports() -> None:
+    conftest = _read("tests/conftest.py")
+
+    assert 'os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")' in conftest
+    assert conftest.index("QT_QPA_PLATFORM") < conftest.index("ROOT =")
+
+
 def test_real_provider_adapter_phase_is_after_mock_mvp_gate() -> None:
     phases_index = json.loads(_read("phases/index.json"))
     phase_dirs = [item["dir"] for item in phases_index["phases"]]

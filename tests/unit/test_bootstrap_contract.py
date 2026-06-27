@@ -60,3 +60,17 @@ def test_harness_validation_uses_strict_uv_gate() -> None:
         ["uv", "run", "mypy", "src"],
         ["python3", "scripts/run_gui_tests.py"],
     ]
+
+
+def test_default_pytest_collection_excludes_gui_tests() -> None:
+    pyproject = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
+
+    assert pyproject["tool"]["pytest"]["ini_options"]["testpaths"] == [
+        "scripts",
+        "tests/unit",
+        "tests/integration",
+    ]
+    assert pyproject["tool"]["coverage"]["run"]["omit"] == [
+        "src/image_translator/app/main.py",
+        "src/image_translator/gui/*",
+    ]

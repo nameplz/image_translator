@@ -14,8 +14,29 @@ if str(HOOK_DIR) not in sys.path:
 
 import project_validation
 
-select_validation_commands = project_validation.select_validation_commands
-validation_failure = project_validation.validation_failure
+LIGHTWEIGHT_VALIDATION_COMMANDS = (
+    ("uv", "run", "ruff", "check", "."),
+    ("uv", "run", "mypy", "src"),
+)
+
+run_validation = project_validation.run_validation
+
+
+def select_validation_commands(cwd: Path) -> list[list[str]]:
+    """Select the cheap Stop-hook gate for the current Python project."""
+    if not (cwd / "pyproject.toml").is_file():
+        return []
+    return [list(command) for command in LIGHTWEIGHT_VALIDATION_COMMANDS]
+
+
+def validation_failure(cwd: Path) -> str | None:
+    """Return a failure reason when lightweight Stop-hook validation fails."""
+    commands = select_validation_commands(cwd)
+    if not commands:
+        return None
+
+    passed, reason = run_validation(commands, cwd)
+    return None if passed else reason
 
 
 def _continue() -> dict[str, Any]:

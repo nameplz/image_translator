@@ -78,7 +78,19 @@ def test_stop_validation_skips_when_no_project_commands(tmp_path):
     assert commands == []
 
 
-def test_stop_validation_selects_package_json_scripts(tmp_path):
+def test_stop_validation_selects_lightweight_python_gate(tmp_path):
+    stop_validation = load_hook("stop_validation")
+    (tmp_path / "pyproject.toml").write_text("[project]\nname = 'demo'\n")
+
+    commands = stop_validation.select_validation_commands(tmp_path)
+
+    assert commands == [
+        ["uv", "run", "ruff", "check", "."],
+        ["uv", "run", "mypy", "src"],
+    ]
+
+
+def test_stop_validation_ignores_package_json_scripts(tmp_path):
     stop_validation = load_hook("stop_validation")
     package_json = {
         "scripts": {
@@ -92,11 +104,30 @@ def test_stop_validation_selects_package_json_scripts(tmp_path):
 
     commands = stop_validation.select_validation_commands(tmp_path)
 
-    assert commands == [
-        ["npm", "run", "lint"],
-        ["npm", "run", "build"],
-        ["npm", "run", "test"],
+    assert commands == []
+
+
+def test_stop_validation_runs_only_lightweight_gate(tmp_path, monkeypatch):
+    stop_validation = load_hook("stop_validation")
+    (tmp_path / "pyproject.toml").write_text("[project]\nname = 'demo'\n")
+    captured = {}
+
+    def fake_run_validation(commands, cwd):
+        captured["commands"] = commands
+        captured["cwd"] = cwd
+        return False, "`uv run mypy src` failed."
+
+    monkeypatch.setattr(stop_validation, "run_validation", fake_run_validation)
+
+    result = stop_validation.evaluate_payload({"cwd": str(tmp_path)})
+
+    assert result["decision"] == "block"
+    assert captured["commands"] == [
+        ["uv", "run", "ruff", "check", "."],
+        ["uv", "run", "mypy", "src"],
     ]
+    assert captured["cwd"] == tmp_path
+    assert "uv run mypy src" in result["reason"]
 
 
 def test_select_validation_commands_detects_node_package_manager_and_typecheck(tmp_path):
